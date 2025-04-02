@@ -213,71 +213,68 @@ void sllSort(sll *sll, bool ascending) {
     sll->tail = q;
 }
 
-// void Unique(struct SinglyLinkedList *sll) {
-//     int max = Max(*sll);
-//     int min = Min(*sll);
-//     int n = max - min + 1;
-//     int H[n];
-//     for (int i = 0; i < n; i++) {
-//         H[i] = 0;
-//     }
-//     struct Node *p = sll->head;
-//     struct Node *q;
-//     while (p) {
-//         if (H[p->data - min] == 0) {
-//             H[p->data - min]++;
-//             q = p;
-//             p = p->next;
-//         }
-//         else if (H[p->data - min] > 0) {
-//             q->next = p->next;
-//             free(p);
-//             p = q->next;
-//         }
-//     }
-// }
+void sllDeleteDuplicates(sll *sll) {
+    int max = sllMax(*sll);
+    int min = sllMin(*sll);
+    int n = max - min + 1;
+    int H[n];
+    for (int i = 0; i < n; i++) {
+        H[i] = 0;
+    }
+    nodeSll *p = sll->head;
+    nodeSll *q;
+    while (p) {
+        if (H[p->data - min] == 0) {
+            H[p->data - min]++;
+            q = p;
+            p = p->next;
+        }
+        else if (H[p->data - min] > 0) {
+            q->next = p->next;
+            printf("Deleted duplicate: %d\n", p->data);
+            free(p);
+            p = q->next;
+        }
+    }
+}
 
-// void Reverse(struct SinglyLinkedList *sll) {
-//     struct Node *p, *q, *r;
-//     p = sll->head;
-//     q = r = NULL;
-//     while (p) {
-//         r = q;
-//         q = p;
-//         p = p->next;
-//         q->next = r;
-//     }
-//     sll->tail = sll->head;
-//     sll->head = q;
-// }
+void sllReverse(sll *sll) {
+    nodeSll *p, *q, *r;
+    p = sll->head;
+    q = r = NULL;
+    while (p) {
+        r = q;
+        q = p;
+        p = p->next;
+        q->next = r;
+    }
+    sll->tail = sll->head;
+    sll->head = q;
+}
 
-// bool isLooped(struct SinglyLinkedList sll) {
-//     struct Node *p, *q;
-//     p = q = sll.head;
-//     do {
-//         p = p->next;
-//         q = q->next;
-//         q = q ? q->next : q;
-//     } while (p && q && p != q);
-//     if (p == q) {
-//         return true;
-//     } 
-//     else {
-//         return false;
-//     }
-// }
+bool sllIsLooped(sll sll) {
+    nodeSll *p, *q;
+    p = q = sll.head;
+    do {
+        p = p->next;
+        q = q->next;
+        q = q ? q->next : q;
+    } while (p && q && p != q);
+    if (p == q) {
+        return true;
+    } 
+    else {
+        return false;
+    }
+}
 
-// struct SinglyLinkedList *Concatenate(struct SinglyLinkedList *sll_1, struct SinglyLinkedList *sll_2) {
-//     struct SinglyLinkedList *sll_3 = (struct SinglyLinkedList *) malloc(sizeof(struct SinglyLinkedList));
-//     sll_1->tail->next = sll_2->head;
-//     sll_3->head = sll_1->head;
-//     sll_3->tail = sll_2->tail;
-//     sll_1->head = sll_1->tail = sll_2->head = sll_2->tail = NULL;
-//     return sll_3;
-// }
+void sllConcatenate(sll *sll_1, sll *sll_2) {
+    sll_1->tail->next = sll_2->head;
+    sll_1->tail = sll_2->tail;
+    sll_2->head = sll_2->tail = NULL;
+}
 
-// struct SinglyLinkedList *Merge(struct SinglyLinkedList *sll_1, struct SinglyLinkedList *sll_2, bool ascending) {
-//     struct SinglyLinkedList *sll_3 = Concatenate(sll_1, sll_2);
-//     Sort(sll_3, ascending);
-//     return sll_3;
-// }
+void sllMerge(sll *sll_1, sll *sll_2, bool ascending) {
+    sllConcatenate(sll_1, sll_2);
+    sllSort(sll_1, ascending);
+}

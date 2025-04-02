@@ -49,4 +49,14 @@ bool sllIsSorted(sll sll, bool ascending);
 
 void sllSort(sll *sll, bool ascending);
 
+void sllDeleteDuplicates(sll *sll);
+
+void sllReverse(sll *sll);
+
+bool sllIsLooped(sll sll);
+
+void sllConcatenate(sll *sll_1, sll *sll_2);
+
+void sllMerge(sll *sll_1, sll *sll_2, bool ascending);
+
 #endif // LINKEDLIST_H
