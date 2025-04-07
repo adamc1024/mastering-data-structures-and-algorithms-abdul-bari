@@ -3,5 +3,6 @@
 !*.cpp
 !*.C
 !*.h
+!*.H
 !*.pdf
 !*.gitignore
