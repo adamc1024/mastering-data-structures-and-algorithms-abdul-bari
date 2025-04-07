@@ -1,4 +1,7 @@
-*.o
-*.exe
-*.DS_Store
-*.vscode
+*
+!*.c
+!*.cpp
+!*.C
+!*.h
+!*.pdf
+!*.gitignore
