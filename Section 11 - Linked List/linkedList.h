@@ -5,58 +5,77 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 // Structure definition
-typedef struct nodeSll {
+typedef struct NodeSll {
     int data;
-    struct nodeSll *next;
-} nodeSll;
+    struct NodeSll *next;
+} NodeSll;
 
-nodeSll *newNodeSll();
+NodeSll *newNodeSll();
 
-void nodeSllInit(nodeSll *node, int data, nodeSll *next);
+void nodeSllInit(NodeSll *node, int data, NodeSll *next);
 
-typedef struct sll {
-    nodeSll *head;
-    nodeSll *tail;
-} sll;
+typedef struct NodeDll {
+    struct NodeDll *prev;
+    int data;
+    struct NodeDll *next;
+} NodeDll;
 
-void sllInit(sll *sll);
+NodeDll *newNodeDll();
 
-void sllAppend(sll *sll, int data);
+void nodeDllInit(NodeDll *node, NodeDll *prev, int data, NodeDll *next);
 
-sll newSLLFromArray(int *arr, int n);
+typedef struct LL {
+    uint8_t typeLL;
+    void *head;
+    void *tail;
+} LL;
 
-void sllDisplay(sll sll);
+//typeLL: 1 == singly linked list, 2 = doubly linked list
+void llInit(LL *ll, uint8_t typeLL);
 
-void sllDestruct(sll *sll);
+void *nextNodeByType(void *p, uint8_t typeLL);
 
-int sllLength(sll sll);
+int getDataByType(void *p, uint8_t typeLL);
 
-int sllSum(sll sll);
+void *newNodeByType(uint8_t typeLL);
 
-float sllAverage(sll sll);
+void llAppend(LL *ll, int data);
 
-int sllMin(sll sll);
+LL newLLFromArray(uint8_t typeLL, int *arr, int n);
 
-int sllMax(sll sll);
+void llDisplay(LL ll);
 
-void sllInsert(sll *sll, int pos, int data);
+void llDestruct(LL *ll);
 
-int sllPop(sll *sll, int pos);
+int llLength(LL ll);
 
-bool sllIsSorted(sll sll, bool ascending);
+int llSum(LL ll);
 
-void sllSort(sll *sll, bool ascending);
+float llAverage(LL ll);
 
-void sllDeleteDuplicates(sll *sll);
+int llMin(LL ll);
 
-void sllReverse(sll *sll);
+int llMax(LL ll);
 
-bool sllIsLooped(sll sll);
+void llInsert(LL *ll, int pos, int data);
 
-void sllConcatenate(sll *sll_1, sll *sll_2);
+// int llPop(LL *ll, int pos);
 
-void sllMerge(sll *sll_1, sll *sll_2, bool ascending);
+// bool llIsSorted(LL ll, bool ascending);
+
+// void llSort(LL *ll, bool ascending);
+
+// void llDeleteDuplicates(LL *ll);
+
+// void llReverse(LL *ll);
+
+// bool llIsLooped(LL ll);
+
+// void llConcatenate(LL *ll_1, LL *ll_2);
+
+// void llMerge(LL *ll_1, LL *ll_2, bool ascending);
 
 #endif // LINKEDLIST_H
