@@ -14,10 +14,11 @@ int main() {
     printf("Max: %d\n", llMax(ll_1));
     llInsert(&ll_1, 3, 25);
     llDisplay(ll_1);
-    // printf("Popped element: %d\n", llPop(&ll_1, 6));
-    // llDisplay(ll_1)
-    // llSort(&ll_1, true);
-    // llDisplay(ll_1);
+    printf("Popped element: %d\n", llPop(&ll_1, 6));
+    llDisplay(ll_1);
+    printf("Is Sorted: %d\n", llIsSorted(&ll_1, true));
+    llSort(&ll_1, true);
+    llDisplay(ll_1);
     // printf("Sorted ascending: %d\n", llIsSorted(ll_1, true));
     // llSort(&ll_1, false);
     // llDisplay(ll_1);

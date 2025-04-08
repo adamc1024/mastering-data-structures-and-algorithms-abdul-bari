@@ -37,12 +37,20 @@ void llInit(LL *ll, uint8_t typeLL) {
 
 void *nextNodeByType(void *p, uint8_t typeLL) {
     if (typeLL == 1) {
-        p = ((NodeSll *)p)->next;
+        return ((NodeSll *)p)->next;
     }
     else if (typeLL == 2) {
-        p = ((NodeDll *)p)->next;
+        return ((NodeDll *)p)->next;
     }
-    return p;
+}
+
+void *assignNextNodeByType(void *p, void *q, uint8_t typeLL) {
+    if (typeLL == 1) {
+        ((NodeSll *)p)->next = ((NodeSll *)q);
+    }
+    else if (typeLL == 2) {
+        ((NodeDll *)p)->next = ((NodeDll *)q);
+    }
 }
 
 int getDataByType(void *p, uint8_t typeLL) {
@@ -231,81 +239,105 @@ void llInsert(LL *ll, int pos, int data) {
     }
 }
 
-// int sllPop(LL *ll, int pos) {
-//     int data, n;
-//     data = -1;
-//     n = sllLength(*sll);
-//     if (n && pos >= 0 && pos < n) {
-//         nodeSll *p = sll->head;
-//         if (pos == 0) {
-//             data = p->data;
-//             sll->head = p->next;
-//             free(p);
-//         }
-//         else {
-//             nodeSll *q;
-//             for (int i = 0; i < pos; i++) {
-//                 q = p;
-//                 p = p->next;
-//             }
-//             data = p->data;
-//             q->next = p->next;
-//             free(p);
-//             if (pos == n - 1) {
-//                 sll->tail = q;
-//             }
-//         }
-//     }
-//     return data;
-// }
+int llPop(LL *ll, int pos) {
+    int data, n;
+    data = -1;
+    n = llLength(*ll);
+    if (n && pos >= 0 && pos < n) {
+        void *p = ll->head;
+        if (pos == 0) {
+            data = getDataByType(p, ll->typeLL);
+            ll->head = nextNodeByType(p, ll->typeLL);
+            free(p);
+        }
+        else {
+            void *q;
+            for (int i = 0; i < pos; i++) {
+                q = p;
+                p = nextNodeByType(p, ll->typeLL);
+            }
+            data = data = getDataByType(p, ll->typeLL);
+            if (ll->typeLL == 1) {
+                ((NodeSll *)q)->next = ((NodeSll *)p)->next;
+            }
+            else if (ll->typeLL == 2) {
+                ((NodeDll *)q)->next = ((NodeDll *)p)->next;
+                if (((NodeDll *)q)->next) {
+                    ((NodeDll *)q)->next->prev = q;
+                }
+            }
+            free(p);
+            if (pos == n - 1) {
+                ll->tail = q;
+            }
+        }
+    }
+    return data;
+}
 
-// bool sllIsSorted(LL ll, bool ascending) {
-//     nodeSll *p = sll.head;
-//     int data;
-//     while (p->next) {
-//         data = p->data;
-//         p = p->next;
-//         if (ascending && data > p->data) {
-//             break;
-//         }
-//         if (!ascending && data < p->data) {
-//             break;
-//         }
-//     }
-//     if (p->next == NULL) {
-//         return true;
-//     }
-//     else {
-//         return false;
-//     }
-// }
+bool llIsSorted(LL *ll, bool ascending) {
+    void *p = ll->head;
+    int data;
+    while (nextNodeByType(p, ll->typeLL)) {
+        data = getDataByType(p, ll->typeLL);
+        p = nextNodeByType(p, ll->typeLL);
+        if (ascending && data > getDataByType(p, ll->typeLL)) {
+            break;
+        }
+        if (!ascending && data < getDataByType(p, ll->typeLL)) {
+            break;
+        }
+    }
+    if ((ll->typeLL == 1 && ((NodeSll *)p)->next == NULL) || (ll->typeLL == 2 && ((NodeDll *)p)->next == NULL)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
-// void sllSort(LL *ll, bool ascending) {
-//     nodeSll *p, *q, *r;
-//     while (!sllIsSorted(*sll, ascending)) {
-//         p = NULL;
-//         q = sll->head;
-//         r = q->next;
-//         while (r) {
-//             if (ascending && q->data > r->data || !ascending && q->data < r->data) {
-//                 q->next = r->next;
-//                 r->next = q;
-//                 q = r;
-//                 r = q->next;
-//                 if (p) {
-//                     p->next = q;
-//                 }
-//                 else {
-//                     sll->head = q;
-//                 }
-//             }
-//             p = q;
-//             q = q->next;
-//             r = r->next;
-//         }
-//     }
-//     sll->tail = q;
-// }
+void llSort(LL *ll, bool ascending) {
+    void *p, *q, *r;
+    while (!llIsSorted(ll, ascending)) {
+        p = NULL;
+        q = ll->head;
+        r = q;
+        r = nextNodeByType(r, ll->typeLL);
+        while (r) {
+            if (ascending && getDataByType(q, ll->typeLL) > getDataByType(r, ll->typeLL) ||
+            !ascending && getDataByType(q, ll->typeLL) < getDataByType(r, ll->typeLL))
+            {
+                assignNextNodeByType(q, nextNodeByType(r, ll->typeLL), ll->typeLL);
+                assignNextNodeByType(r, q, ll->typeLL);
+                q = r;
+                r = nextNodeByType(r, ll->typeLL);
+                if (ll->typeLL == 2)
+                {
+                    printf("a\n");
+                    ((NodeDll *)nextNodeByType(r, ll->typeLL))->prev = r;
+                    ((NodeDll *)r)->prev = q;
+                }
+                nextNodeByType(r, ll->typeLL);
+                if (p) {
+                    assignNextNodeByType(p, q, ll->typeLL);
+                    // if (ll->typeLL == 2)
+                    // {
+                    //     ((NodeDll *)q)->prev = p;
+                    // }
+                }
+                else {
+                    ll->head = q;
+                }
+            }
+            p = q;
+            q = nextNodeByType(q, ll->typeLL);
+            r = nextNodeByType(r, ll->typeLL);
+            llDisplay(*ll);
+        }
+    // llDisplay(*ll);
+    }
+    ll->tail = q;
+}
 
 // void sllDeleteDuplicates(LL *ll) {
 //     int max = sllMax(*sll);

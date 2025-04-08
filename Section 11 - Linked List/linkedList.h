@@ -38,6 +38,8 @@ void llInit(LL *ll, uint8_t typeLL);
 
 void *nextNodeByType(void *p, uint8_t typeLL);
 
+void *assignNextNodeByType(void *p, void *q, uint8_t typeLL);
+
 int getDataByType(void *p, uint8_t typeLL);
 
 void *newNodeByType(uint8_t typeLL);
@@ -62,11 +64,11 @@ int llMax(LL ll);
 
 void llInsert(LL *ll, int pos, int data);
 
-// int llPop(LL *ll, int pos);
+int llPop(LL *ll, int pos);
 
-// bool llIsSorted(LL ll, bool ascending);
+bool llIsSorted(LL *ll, bool ascending);
 
-// void llSort(LL *ll, bool ascending);
+void llSort(LL *ll, bool ascending);
 
 // void llDeleteDuplicates(LL *ll);
 
