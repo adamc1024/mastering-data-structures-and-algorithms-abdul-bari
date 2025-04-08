@@ -25,11 +25,9 @@ void nodeDllInit(NodeDll *node, NodeDll *prev, int data, NodeDll *next) {
 }
 
 void llInit(LL *ll, uint8_t typeLL) {
-    if (typeLL == 1 || typeLL == 2) {
-        ll->typeLL = typeLL;
-    }
-    else {
-        ll->typeLL = 1;
+    ll->typeLL = 1;
+    if (typeLL == 2) {
+        ll->typeLL = 2;
     }
     ll->head = NULL;
     ll->tail = NULL;
@@ -55,14 +53,13 @@ void assignNextNodeByType(void *p, void *q, uint8_t typeLL) {
 }
 
 int getDataByType(void *p, uint8_t typeLL) {
-    int data = -1;
     if (typeLL == 1) {
-        data = ((NodeSll *)p)->data;
+        return ((NodeSll *)p)->data;
     }
     else if (typeLL == 2) {
-        data = ((NodeDll *)p)->data;
+        return ((NodeDll *)p)->data;
     }
-    return data;
+    return -1;
 }
 
 void *newNodeByType(uint8_t typeLL) {
@@ -120,20 +117,20 @@ LL newLLFromArray(uint8_t typeLL, int *arr, int n) {
     return ll;
 }
 
-void llDisplay(LL ll)
+void llDisplay(LL *ll)
 {
-    void *p = ll.head;
+    void *p = ll->head;
     printf("[");
     bool comma = false;
     while (p) {
         if (comma) {
             printf(", ");
         }
-        if (ll.typeLL == 1) {
+        if (ll->typeLL == 1) {
             printf("%d", ((NodeSll *)p)->data);
             p = ((NodeSll *)p)->next;
         }
-        else if (ll.typeLL == 2) {
+        else if (ll->typeLL == 2) {
             printf("%d", ((NodeDll *)p)->data);
             p = ((NodeDll *)p)->next;
         }
@@ -153,54 +150,54 @@ void llDestruct(LL *ll) {
     printf("LL Deallocated\n");
 }
 
-int llLength(LL ll) {
+int llLength(LL *ll) {
     int result = 0;
-    void *p = ll.head;
+    void *p = ll->head;
     while (p) {
         result++;
-        p = nextNodeByType(p, ll.typeLL);
+        p = nextNodeByType(p, ll->typeLL);
     }
     return result;
 }
 
-int llSum(LL ll) {
+int llSum(LL *ll) {
     int result = 0;
-    void *p = ll.head;
+    void *p = ll->head;
     while (p) {
-        result += getDataByType(p, ll.typeLL);
-        p = nextNodeByType(p, ll.typeLL);
+        result += getDataByType(p, ll->typeLL);
+        p = nextNodeByType(p, ll->typeLL);
     }
     return result;
 }
 
-float llAverage(LL ll) {
+float llAverage(LL *ll) {
     return (float)llSum(ll)/llLength(ll);
 }
 
-int llMin(LL ll) {
-    void *p = ll.head;
-    int result = getDataByType(p, ll.typeLL);
+int llMin(LL *ll) {
+    void *p = ll->head;
+    int result = getDataByType(p, ll->typeLL);
     int pData;
     while (p) {
-        pData = getDataByType(p, ll.typeLL);
+        pData = getDataByType(p, ll->typeLL);
         if (pData < result) {
             result = pData;
         }
-        p = nextNodeByType(p, ll.typeLL);
+        p = nextNodeByType(p, ll->typeLL);
     }
     return result;
 }
 
-int llMax(LL ll) {
-    void *p = ll.head;
-    int result = getDataByType(p, ll.typeLL);
+int llMax(LL *ll) {
+    void *p = ll->head;
+    int result = getDataByType(p, ll->typeLL);
     int pData;
     while (p) {
-        pData = getDataByType(p, ll.typeLL);
+        pData = getDataByType(p, ll->typeLL);
         if (pData > result) {
             result = pData;
         }
-        p = nextNodeByType(p, ll.typeLL);
+        p = nextNodeByType(p, ll->typeLL);
     }
     return result;
 }
@@ -208,7 +205,7 @@ int llMax(LL ll) {
 void llInsert(LL *ll, int pos, int data) {
     void *p = ll->head;
     void *q;
-    int n = llLength(*ll);
+    int n = llLength(ll);
     if (pos == n) {
         llAppend(ll, data);
     }
@@ -244,7 +241,7 @@ void llInsert(LL *ll, int pos, int data) {
 int llPop(LL *ll, int pos) {
     int data, n;
     data = -1;
-    n = llLength(*ll);
+    n = llLength(ll);
     if (n && pos >= 0 && pos < n) {
         void *p = ll->head;
         if (pos == 0) {
@@ -334,30 +331,34 @@ void llSort(LL *ll, bool ascending) {
     ll->tail = q;
 }
 
-// void sllDeleteDuplicates(LL *ll) {
-//     int max = sllMax(*sll);
-//     int min = sllMin(*sll);
-//     int n = max - min + 1;
-//     int H[n];
-//     for (int i = 0; i < n; i++) {
-//         H[i] = 0;
-//     }
-//     nodeSll *p = sll->head;
-//     nodeSll *q;
-//     while (p) {
-//         if (H[p->data - min] == 0) {
-//             H[p->data - min]++;
-//             q = p;
-//             p = p->next;
-//         }
-//         else if (H[p->data - min] > 0) {
-//             q->next = p->next;
-//             printf("Deleted duplicate: %d\n", p->data);
-//             free(p);
-//             p = q->next;
-//         }
-//     }
-// }
+void llDeleteDuplicates(LL *ll) {
+    int max = llMax(ll);
+    int min = llMin(ll);
+    int n = max - min + 1;
+    int H[n];
+    for (int i = 0; i < n; i++) {
+        H[i] = 0;
+    }
+    void *p, *q;
+    p = ll->head;
+    while (p) {
+        int pData = getDataByType(p, ll->typeLL);
+        if (H[pData - min] == 0) {
+            H[pData - min]++;
+            q = p;
+            p = nextNodeByType(p, ll->typeLL);
+        }
+        else if (H[pData - min] > 0) { 
+            assignNextNodeByType(q, nextNodeByType(p, ll->typeLL), ll->typeLL);
+            if (ll->typeLL == 2 && nextNodeByType(p, ll->typeLL)) {
+                ((NodeDll *)q)->next->prev = q;
+            }
+            printf("Deleted duplicate: %d\n", pData);
+            free(p);
+            p = nextNodeByType(q, ll->typeLL);
+        }
+    }
+}
 
 // void sllReverse(LL *ll) {
 //     nodeSll *p, *q, *r;

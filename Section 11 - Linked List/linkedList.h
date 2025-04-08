@@ -48,19 +48,19 @@ void llAppend(LL *ll, int data);
 
 LL newLLFromArray(uint8_t typeLL, int *arr, int n);
 
-void llDisplay(LL ll);
+void llDisplay(LL *ll);
 
 void llDestruct(LL *ll);
 
-int llLength(LL ll);
+int llLength(LL *ll);
 
-int llSum(LL ll);
+int llSum(LL *ll);
 
-float llAverage(LL ll);
+float llAverage(LL *ll);
 
-int llMin(LL ll);
+int llMin(LL *ll);
 
-int llMax(LL ll);
+int llMax(LL *ll);
 
 void llInsert(LL *ll, int pos, int data);
 
@@ -70,7 +70,7 @@ bool llIsSorted(LL *ll, bool ascending);
 
 void llSort(LL *ll, bool ascending);
 
-// void llDeleteDuplicates(LL *ll);
+void llDeleteDuplicates(LL *ll);
 
 // void llReverse(LL *ll);
 
