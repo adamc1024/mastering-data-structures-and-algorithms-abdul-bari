@@ -38,7 +38,7 @@ void llInit(LL *ll, uint8_t typeLL);
 
 void *nextNodeByType(void *p, uint8_t typeLL);
 
-void *assignNextNodeByType(void *p, void *q, uint8_t typeLL);
+void assignNextNodeByType(void *p, void *q, uint8_t typeLL);
 
 int getDataByType(void *p, uint8_t typeLL);
 

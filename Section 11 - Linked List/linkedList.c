@@ -42,9 +42,10 @@ void *nextNodeByType(void *p, uint8_t typeLL) {
     else if (typeLL == 2) {
         return ((NodeDll *)p)->next;
     }
+    return p;
 }
 
-void *assignNextNodeByType(void *p, void *q, uint8_t typeLL) {
+void assignNextNodeByType(void *p, void *q, uint8_t typeLL) {
     if (typeLL == 1) {
         ((NodeSll *)p)->next = ((NodeSll *)q);
     }
@@ -54,7 +55,7 @@ void *assignNextNodeByType(void *p, void *q, uint8_t typeLL) {
 }
 
 int getDataByType(void *p, uint8_t typeLL) {
-    int data;
+    int data = -1;
     if (typeLL == 1) {
         data = ((NodeSll *)p)->data;
     }
@@ -71,6 +72,7 @@ void *newNodeByType(uint8_t typeLL) {
     else if (typeLL == 2) {
         return newNodeDll();
     }
+    return NULL;
 }
 
 void llAppend(LL *ll, int data) {
@@ -256,7 +258,7 @@ int llPop(LL *ll, int pos) {
                 q = p;
                 p = nextNodeByType(p, ll->typeLL);
             }
-            data = data = getDataByType(p, ll->typeLL);
+            data = getDataByType(p, ll->typeLL);
             if (ll->typeLL == 1) {
                 ((NodeSll *)q)->next = ((NodeSll *)p)->next;
             }
@@ -301,8 +303,7 @@ void llSort(LL *ll, bool ascending) {
     while (!llIsSorted(ll, ascending)) {
         p = NULL;
         q = ll->head;
-        r = q;
-        r = nextNodeByType(r, ll->typeLL);
+        r = nextNodeByType(q, ll->typeLL);
         while (r) {
             if (ascending && getDataByType(q, ll->typeLL) > getDataByType(r, ll->typeLL) ||
             !ascending && getDataByType(q, ll->typeLL) < getDataByType(r, ll->typeLL))
@@ -311,30 +312,24 @@ void llSort(LL *ll, bool ascending) {
                 assignNextNodeByType(r, q, ll->typeLL);
                 q = r;
                 r = nextNodeByType(r, ll->typeLL);
-                if (ll->typeLL == 2)
-                {
-                    printf("a\n");
-                    ((NodeDll *)nextNodeByType(r, ll->typeLL))->prev = r;
-                    ((NodeDll *)r)->prev = q;
-                }
-                nextNodeByType(r, ll->typeLL);
                 if (p) {
                     assignNextNodeByType(p, q, ll->typeLL);
-                    // if (ll->typeLL == 2)
-                    // {
-                    //     ((NodeDll *)q)->prev = p;
-                    // }
                 }
                 else {
                     ll->head = q;
+                }
+                if (ll->typeLL == 2) {
+                    ((NodeDll *)q)->prev = p;
+                    ((NodeDll *)r)->prev = q;
+                    if (((NodeDll *)r)->next) {
+                        ((NodeDll *)r)->next->prev = r;
+                    }
                 }
             }
             p = q;
             q = nextNodeByType(q, ll->typeLL);
             r = nextNodeByType(r, ll->typeLL);
-            llDisplay(*ll);
         }
-    // llDisplay(*ll);
     }
     ll->tail = q;
 }
