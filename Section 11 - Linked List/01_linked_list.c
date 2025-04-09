@@ -1,15 +1,11 @@
-#include "linkedList.h"
+#include "linkedListClang.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-const uint8_t SLL = 0x1;
-const uint8_t DLL = 0x2;
-
 int main() {
-    int n = 14;
     int arr_1[14] = {5, 2, 9, 1, 7, 3, 6, 3, 34, 56, 34, 89, 65, 43};
-    LL ll_1 = newLLFromArray(DLL, arr_1, n);
+    LL ll_1 = newLLFromArray(DOUBLY_LINKED, arr_1, 14);
     llDisplay(&ll_1);
     printf("Length: %d\n", llLength(&ll_1));
     printf("Sum: %d\n", llSum(&ll_1));
@@ -34,20 +30,24 @@ int main() {
     llAppend(&ll_1, 5);
     llAppend(&ll_1, 25);
     llDisplay(&ll_1);
+    llPrintHeadAndTail(&ll_1);
     llDeleteDuplicates(&ll_1);
     llDisplay(&ll_1);
-    // llReverse(&ll_1);
-    // llDisplay(ll_1);
-    // int arr_2[3] = {9, 3, 67};
-    // LL ll_2 = newllFromArray(arr_2, 3);
-    // llConcatenate(&ll_1, &ll_2);
-    // llDisplay(ll_1);
-    // llDisplay(ll_2);
-    // int arr_3[8] = {3, 19, 45, 8, 5, 2, 1, 90};
-    // LL ll_3 = newllFromArray(arr_3, 8);
-    // llMerge(&ll_1, &ll_3, true);
-    // llDisplay(ll_1);
-    // llDisplay(ll_3);
+    llPrintHeadAndTail(&ll_1);
+    llReverse(&ll_1);
+    llDisplay(&ll_1);
+    llPrintHeadAndTail(&ll_1);
+    printf("Is Looped: %d\n", llIsLooped(&ll_1));
+    int arr_2[3] = {11, 73, 67};
+    LL ll_2 = newLLFromArray(DOUBLY_LINKED, arr_2, 3);
+    llConcatenate(&ll_1, &ll_2);
+    llDisplay(&ll_1);
+    llDisplay(&ll_2);
+    int arr_3[8] = {1024, 19, 45, 8, 6, 254, 104, 90};
+    LL ll_3 = newLLFromArray(DOUBLY_LINKED, arr_3, 8);
+    llMerge(&ll_1, &ll_3, true);
+    llDisplay(&ll_1);
+    llDisplay(&ll_3);
     llDestruct(&ll_1);
     return 0;
 }
