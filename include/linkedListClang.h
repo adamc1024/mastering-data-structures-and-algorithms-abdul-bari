@@ -8,7 +8,8 @@
 #include <stdint.h>
 
 // Structure definition
-typedef struct NodeSll {
+typedef struct NodeSll
+{
     int data;
     struct NodeSll *next;
 } NodeSll;
@@ -17,7 +18,8 @@ NodeSll *newNodeSll();
 
 void nodeSllInit(NodeSll *node, int data, NodeSll *next);
 
-typedef struct NodeDll {
+typedef struct NodeDll
+{
     struct NodeDll *prev;
     int data;
     struct NodeDll *next;
@@ -27,7 +29,8 @@ NodeDll *newNodeDll();
 
 void nodeDllInit(NodeDll *node, NodeDll *prev, int data, NodeDll *next);
 
-typedef struct LL {
+typedef struct LL
+{
     uint8_t typeLL;
     void *head;
     void *tail;
