@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-const uint8_t SINGLY_LINKED = 0x01;
-const uint8_t DOUBLY_LINKED = 0x02;
-
 NodeSll *newNodeSll()
 {
     NodeSll *t = (NodeSll *) malloc(sizeof(NodeSll));
@@ -30,6 +27,9 @@ void nodeDllInit(NodeDll *node, NodeDll *prev, int data, NodeDll *next)
     node->data = data;
     node->next = next;
 }
+
+const uint8_t SINGLY_LINKED = 0x1;
+const uint8_t DOUBLY_LINKED = 0x2;
 
 void llInit(LL *ll, uint8_t typeLL)
 {

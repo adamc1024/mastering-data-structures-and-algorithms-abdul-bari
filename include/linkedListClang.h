@@ -36,8 +36,8 @@ typedef struct LL
     void *tail;
 } LL;
 
-const uint8_t SINGLY_LINKED;
-const uint8_t DOUBLY_LINKED;
+extern const uint8_t SINGLY_LINKED;
+extern const uint8_t DOUBLY_LINKED;
 
 //typeLL: 1 == singly linked list, 2 = doubly linked list
 void llInit(LL *ll, uint8_t typeLL);
